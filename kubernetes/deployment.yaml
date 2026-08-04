@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aws-dev-env-app
+  namespace: ephemeral-dev
+  labels:
+    app: aws-dev-env-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aws-dev-env-app
+  template:
+    metadata:
+      labels:
+        app: aws-dev-env-app
+    spec:
+      containers:
+        - name: aws-dev-env-app
+          image: docker.io/aboodcs/aws-dev-env-app:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 5000
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 6
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"

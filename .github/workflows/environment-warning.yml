@@ -1,0 +1,25 @@
+name: Environment Warning
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 14 * * 1-5"
+concurrency:
+  group: dev-environment
+  cancel-in-progress: false
+permissions:
+  contents: read
+env:
+  AWS_REGION: ${{ vars.AWS_REGION }}
+jobs:
+  warning:
+    name: Environment Warning
+    runs-on: ubuntu-latest
+    steps:
+      - name: Slack Notification - Destroy Warning
+        run: |
+          curl -X POST \
+          -H 'Content-type: application/json' \
+          --data "{
+            \"text\":\"⚠️ Destroy Warning\n\nEnvironment: ${{ vars.ENVIRONMENT_NAME }}\nOwner: ${{ vars.OWNER_NAME }}\nStatus: Running\n\nAWS Region: ${{ env.AWS_REGION }}\nDestroy Time: 18:00 Jordan Time (15:00 UTC)\nRemaining Time: 30 minutes\n\nPlease save your work before automatic cleanup.\n\nTrigger: ${{ github.event_name }}\nWorkflow Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\"
+          }" \
+          ${{ secrets.SLACK_WEBHOOK_URL }}

@@ -1,0 +1,72 @@
+# ==============================
+# Python
+# ==============================
+.env/
+.env.*
+*.env
+
+venv/
+.venv/
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+
+# ==============================
+# Terraform
+# ==============================
+.terraform/
+
+*.tfstate
+*.tfstate.*
+*.tfplan
+
+terraform.tfvars
+*.auto.tfvars
+
+crash.log
+crash.*.log
+
+
+# ==============================
+# AWS / Cloud Credentials
+# ==============================
+*.pem
+*.key
+*.token
+
+.aws/
+
+
+# ==============================
+# SSH Keys
+# Keep only the example template
+# ==============================
+keys/*.pub
+!keys/example-dev-environment.pub.example
+
+id_rsa
+id_rsa.pub
+
+
+# ==============================
+# Local Files
+# ==============================
+security-check.txt
+
+
+# ==============================
+# Logs
+# ==============================
+*.log
+
+
+# ==============================
+# OS / Editors
+# ==============================
+.DS_Store
+
+.vscode/
+.idea/
