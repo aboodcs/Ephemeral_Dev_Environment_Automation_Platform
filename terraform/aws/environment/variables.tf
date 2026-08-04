@@ -57,9 +57,9 @@ variable "instance_type" {
   default     = "t3.micro"
 }
 
-variable "ssh_public_key_path" {
-  description = "Local path to the SSH public key used for EC2 access"
-  type        = string
+variable "ssh_public_key" {
+  type      = string
+  sensitive = true
 }
 
 variable "availability_zone" {

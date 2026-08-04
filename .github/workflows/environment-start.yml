@@ -12,7 +12,6 @@ env:
   AWS_REGION: ${{ vars.AWS_REGION }}
   TF_STATE_BUCKET: ${{ vars.TF_STATE_BUCKET }}
   TF_VAR_allowed_ssh_cidr: ${{ vars.TF_VAR_allowed_ssh_cidr }}
-  TF_VAR_ssh_public_key_path: ${{ vars.TF_VAR_ssh_public_key_path }}
 jobs:
   terraform-apply:
     name: Start Environment
