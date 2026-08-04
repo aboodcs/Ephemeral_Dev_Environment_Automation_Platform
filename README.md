@@ -309,6 +309,9 @@ cd terraform/aws/environment
 - **AWS Key Pair**: Registers your local `~/.ssh/ephemeral-dev-aws.pub` public key in AWS.
 - **AWS EC2 Instance**: Launches an `t3.medium` Amazon Linux 2023 instance equipped with `cloud-init`.
 
+> [!TIP]
+> **Instance Sizing Flexibility**: The default configuration provisions a `t3.medium` instance ideal for lightweight dev and testing. For compute-heavy or multi-service microservice workloads, override `instance_type` in `terraform/aws/environment/terraform.tfvars` (e.g., `instance_type = "t3.large"` or `"c6i.xlarge"`).
+
 ---
 
 # 9. GitHub Actions Setup
@@ -536,6 +539,16 @@ By automatically destroying the infrastructure overnight and during weekends, cl
 | **Kubernetes Pod Failures** | Container image pull failure or resource constraint on kind host. | SSH to EC2, run `kubectl describe pod <pod-name> -n ephemeral-dev`, check `docker logs`. |
 | **Missing SSH Key Error** | Terraform cannot find public key at specified local path. | Generate key with `ssh-keygen -t ed25519 -f ~/.ssh/ephemeral-dev-aws` before running `terraform apply`. |
 | **AWS Credentials Errors** | Expired or incorrect AWS keys configured in environment or GitHub Secrets. | Re-verify credentials using `aws sts get-caller-identity`. |
+
+### How to Force-Unlock a Stuck Terraform State
+If a pipeline step terminates unexpectedly, Terraform may leave the state file locked in S3. To clear the lock:
+1. Locate the `LOCK-ID` string in the error log output (e.g., `Lock Info: ID: 5a81e9b2-xxxx`).
+2. Run the force-unlock command inside `terraform/aws/environment`:
+   ```bash
+   cd terraform/aws/environment
+   terraform force-unlock <LOCK-ID>
+   ```
+3. Re-run `terraform plan` to confirm state access is restored.
 
 ---
 
