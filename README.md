@@ -333,7 +333,7 @@ The platform features automated workflow lifecycle management configured in `.gi
   2. Sets up Terraform CLI.
   3. Authenticates with AWS using Repository Secrets.
   4. Runs `terraform init` and `terraform apply -auto-approve`.
-  5. Obtains EC2 Public IP and waits for application bootstrap completion via SSH/HTTP polling.
+  5. Obtains EC2 Public IP, verifies bootstrap completion, and executes automated end-to-end integration tests (`scripts/wait-for-application.sh`).
   6. Dispatches a Slack notification confirming the environment is active with connection URL.
 
 ### 2. `environment-warning.yml` (Pre-Destruction Warning)
