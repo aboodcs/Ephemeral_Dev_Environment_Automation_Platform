@@ -171,71 +171,60 @@ Before deploying the platform, ensure the following CLI tools and accounts are i
 
 # 6. Complete Deployment Guide From Scratch
 
-### ⚡ Quick Start Summary (TL;DR for Developers)
-If you want to configure everything and start working immediately, execute these commands:
+This is the single, fastest, and definitive end-to-end deployment guide to get your ephemeral dev environment up and running from scratch.
+
+### Fast-Track Deployment (One-Liners)
 
 ```bash
-# 1. Clone & enter project
+# 1. Install local prerequisites (Debian/Ubuntu)
+sudo apt-get update && sudo apt-get install -y git terraform awscli openssh-client
+
+# 2. Clone repository & navigate to workspace
 git clone https://github.com/your-username/Ephemeral_Dev_Environment_Automation_Platform.git
 cd Ephemeral_Dev_Environment_Automation_Platform
 
-# 2. Configure AWS CLI & Verify Access
+# 3. Configure AWS credentials & verify identity
 aws configure
 aws sts get-caller-identity
 
-# 3. Generate SSH Key Pair (Required for EC2 SSH access)
+# 4. Generate local SSH Key Pair (Required for EC2 access)
 ssh-keygen -t ed25519 -f ~/.ssh/ephemeral-dev-aws -N "" -C "ephemeral-dev"
 chmod 600 ~/.ssh/ephemeral-dev-aws && chmod 644 ~/.ssh/ephemeral-dev-aws.pub
 
-# 4. Provision Cloud Infrastructure via Terraform
+# 5. Provision AWS Infrastructure using Terraform
 cd terraform/aws/environment
 terraform init
+terraform validate
 terraform apply -auto-approve
 
-# 5. Connect to the Live Host (Using Public IP from Terraform output)
-ssh -i ~/.ssh/ephemeral-dev-aws ec2-user@<EC2_PUBLIC_IP>
+# 6. Connect to your provisioned EC2 instance (Replace PUBLIC_IP with Terraform output)
+ssh -i ~/.ssh/ephemeral-dev-aws ec2-user@<PUBLIC_IP>
 ```
 
----
+### Detailed Step-by-Step Execution
 
-### Step 1: Clone Repository
-Clone the platform codebase to your local workstation:
+#### Step 1: Clone Repository
 ```bash
 git clone https://github.com/your-username/Ephemeral_Dev_Environment_Automation_Platform.git
 cd Ephemeral_Dev_Environment_Automation_Platform
 ```
 
-### Step 2: Install Application Requirements
-Verify local application dependencies for local testing (optional):
+#### Step 2: Install Application Requirements
+Verify local Flask application dependencies (optional for local dev):
 ```bash
 cd app
 pip install -r requirements.txt
 cd ..
 ```
 
-### Step 3: Configure Local AWS Credentials
-Configure your AWS CLI with an IAM user possessing admin permissions for VPC, EC2, S3, and IAM management:
+#### Step 3: Configure AWS Credentials & Verify
+Set up your AWS credentials with an IAM user having admin permissions for EC2, VPC, S3, and IAM:
 ```bash
 aws configure
 ```
-Input your credentials when prompted:
-- **AWS Access Key ID**: `YOUR_AWS_ACCESS_KEY_ID`
-- **AWS Secret Access Key**: `YOUR_AWS_SECRET_ACCESS_KEY`
-- **Default region name**: `us-east-1` (or your target region)
-- **Default output format**: `json`
-
-### Step 4: Verify AWS Authentication
-Verify that your AWS identity is active:
+Provide your **Access Key ID**, **Secret Access Key**, region (`us-east-1`), and output format (`json`). Then verify access:
 ```bash
 aws sts get-caller-identity
-```
-*Expected Output:*
-```json
-{
-    "UserId": "AIDAXXXXXXXXXXXXXXXXX",
-    "Account": "123456789012",
-    "Arn": "arn:aws:iam::123456789012:user/devops-admin"
-}
 ```
 
 ---
