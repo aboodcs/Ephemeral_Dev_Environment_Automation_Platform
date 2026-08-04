@@ -8,7 +8,7 @@
 ![Python](https://img.shields.io/badge/Python-Flask-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Slack](https://img.shields.io/badge/Slack-Notifications-4A154B?style=for-the-badge&logo=slack&logoColor=white)
 
-An automated, self-destructing, production-grade cloud infrastructure platform designed to provision ephemeral development environments on demand during working hours and tear them down automatically after hours to drastically reduce AWS cloud infrastructure costs.
+An automated, self-destructing, enterprise-grade cloud infrastructure platform designed to provision ephemeral development environments on demand during working hours and tear them down automatically after working hours to drastically reduce AWS cloud infrastructure costs.
 
 ---
 
@@ -171,60 +171,46 @@ Before deploying the platform, ensure the following CLI tools and accounts are i
 
 # 6. Complete Deployment Guide From Scratch
 
-This is the single, fastest, and definitive end-to-end deployment guide to get your ephemeral dev environment up and running from scratch.
+Follow this step-by-step guide to deploy the platform from a clean machine:
 
-### Fast-Track Deployment (One-Liners)
-
-```bash
-# 1. Install local prerequisites (Debian/Ubuntu)
-sudo apt-get update && sudo apt-get install -y git terraform awscli openssh-client
-
-# 2. Clone repository & navigate to workspace
-git clone https://github.com/your-username/Ephemeral_Dev_Environment_Automation_Platform.git
-cd Ephemeral_Dev_Environment_Automation_Platform
-
-# 3. Configure AWS credentials & verify identity
-aws configure
-aws sts get-caller-identity
-
-# 4. Generate local SSH Key Pair (Required for EC2 access)
-ssh-keygen -t ed25519 -f ~/.ssh/ephemeral-dev-aws -N "" -C "ephemeral-dev"
-chmod 600 ~/.ssh/ephemeral-dev-aws && chmod 644 ~/.ssh/ephemeral-dev-aws.pub
-
-# 5. Provision AWS Infrastructure using Terraform
-cd terraform/aws/environment
-terraform init
-terraform validate
-terraform apply -auto-approve
-
-# 6. Connect to your provisioned EC2 instance (Replace PUBLIC_IP with Terraform output)
-ssh -i ~/.ssh/ephemeral-dev-aws ec2-user@<PUBLIC_IP>
-```
-
-### Detailed Step-by-Step Execution
-
-#### Step 1: Clone Repository
+### Step 1: Clone Repository
+Clone the platform codebase to your workstation:
 ```bash
 git clone https://github.com/your-username/Ephemeral_Dev_Environment_Automation_Platform.git
 cd Ephemeral_Dev_Environment_Automation_Platform
 ```
 
-#### Step 2: Install Application Requirements
-Verify local Flask application dependencies (optional for local dev):
+### Step 2: Install Application Requirements
+Verify local application dependencies for testing:
 ```bash
 cd app
 pip install -r requirements.txt
 cd ..
 ```
 
-#### Step 3: Configure AWS Credentials & Verify
-Set up your AWS credentials with an IAM user having admin permissions for EC2, VPC, S3, and IAM:
+### Step 3: Configure AWS Credentials
+Configure your AWS CLI with an IAM user possessing permissions for VPC, EC2, S3, and IAM management:
 ```bash
 aws configure
 ```
-Provide your **Access Key ID**, **Secret Access Key**, region (`us-east-1`), and output format (`json`). Then verify access:
+Input your credentials when prompted:
+- **AWS Access Key ID**: `YOUR_AWS_ACCESS_KEY_ID`
+- **AWS Secret Access Key**: `YOUR_AWS_SECRET_ACCESS_KEY`
+- **Default region name**: `us-east-1` (or your target region)
+- **Default output format**: `json`
+
+### Step 4: Verify AWS Authentication
+Verify that your AWS credentials are authenticated:
 ```bash
 aws sts get-caller-identity
+```
+*Expected Output:*
+```json
+{
+    "UserId": "AIDAXXXXXXXXXXXXXXXXX",
+    "Account": "123456789012",
+    "Arn": "arn:aws:iam::123456789012:user/devops-admin"
+}
 ```
 
 ---
