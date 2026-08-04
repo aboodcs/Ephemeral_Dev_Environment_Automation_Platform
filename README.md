@@ -315,9 +315,10 @@ The platform features automated workflow lifecycle management configured in `.gi
 
 ```
 .github/workflows/
+├── environment-destroy.yml
+├── environment-manual.yml
 ├── environment-start.yml
-├── environment-warning.yml
-└── environment-destroy.yml
+└── environment-warning.yml
 ```
 
 ### 1. `environment-start.yml` (Morning Startup)
@@ -553,20 +554,7 @@ Trigger the automated teardown pipeline via GitHub Actions:
 
 ---
 
-# 19. Future Improvements
-
-To further enhance the platform's enterprise readiness, the following roadmap features are planned:
-
-- [ ] **AWS OIDC Integration**: Migrate from long-lived AWS IAM Access Keys in GitHub Secrets to short-lived OpenID Connect (OIDC) federated role assume policies.
-- [ ] **Managed Kubernetes (AWS EKS)**: Add support for provisioning ephemeral Amazon EKS clusters for workloads requiring native AWS cloud integrations.
-- [ ] **Observability Stack**: Deploy lightweight Prometheus and Grafana instances via Helm inside the cluster for real-time memory and CPU metrics collection.
-- [ ] **Multi-User Environment Support**: Enable parameterized workspace names (`ephemeral-dev-user1`, `ephemeral-dev-user2`) for concurrent developer usage.
-- [ ] **Slack Interactive Approvals**: Integrate interactive Slack buttons allowing developers to extend environment lifetime beyond the default shutdown window.
-- [ ] **Auto-scaling Node Pools**: Integrate Cluster Autoscaler for dynamic resource scaling during heavy test suites.
-
----
-
-# 20. Final Professional Summary
+# 19. Final Professional Summary
 
 The **Ephemeral Dev Environment Automation Platform** demonstrates an end-to-end production-grade implementation of modern DevOps engineering practices:
 
