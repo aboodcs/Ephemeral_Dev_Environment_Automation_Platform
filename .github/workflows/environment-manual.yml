@@ -23,51 +23,46 @@ env:
   AWS_REGION: ${{ vars.AWS_REGION }}
   TF_STATE_BUCKET: ${{ vars.TF_STATE_BUCKET }}
   TF_VAR_allowed_ssh_cidr: ${{ vars.TF_VAR_allowed_ssh_cidr }}
-  TF_VAR_ssh_public_key_path: ${{ vars.TF_VAR_ssh_public_key_path }}
+  TF_VAR_ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
 
 jobs:
   terraform:
     name: Terraform ${{ github.event.inputs.action }}
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: terraform/aws/environment
+
     steps:
-
       - name: Checkout
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@v5
 
       - name: AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v5
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-
       - name: Terraform Setup
-        uses: hashicorp/setup-terraform@v3
-
+        uses: hashicorp/setup-terraform@v4
 
       - name: Terraform Init
-        working-directory: terraform/aws/environment
         run: |
           terraform init \
             -backend-config="bucket=${TF_STATE_BUCKET}" \
             -backend-config="region=${AWS_REGION}"
 
-
       - name: Terraform Plan
         if: github.event.inputs.action == 'plan'
-        working-directory: terraform/aws/environment
         run: |
           terraform plan \
             -input=false \
             -lock-timeout=5m
 
-
       - name: Terraform Apply
         if: github.event.inputs.action == 'apply'
-        working-directory: terraform/aws/environment
         run: |
           terraform plan \
             -input=false \
@@ -79,10 +74,8 @@ jobs:
             -auto-approve \
             manual.tfplan
 
-
       - name: Terraform Destroy
         if: github.event.inputs.action == 'destroy'
-        working-directory: terraform/aws/environment
         run: |
           terraform destroy \
             -input=false \
