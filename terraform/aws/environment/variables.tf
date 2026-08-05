@@ -54,7 +54,7 @@ variable "allowed_ssh_cidr" {
 variable "instance_type" {
   description = "EC2 instance type used by the development environment"
   type        = string
-  default     = "t3.micro"
+  default     = "t3.small"
 }
 
 variable "ssh_public_key" {
