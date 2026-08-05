@@ -176,7 +176,7 @@ Follow this step-by-step guide to deploy the platform from a clean machine:
 ### Step 1: Clone Repository
 Clone the platform codebase to your workstation:
 ```bash
-git clone https://github.com/your-username/Ephemeral_Dev_Environment_Automation_Platform.git
+git clone https://github.com/aboodcs/Ephemeral_Dev_Environment_Automation_Platform.git
 cd Ephemeral_Dev_Environment_Automation_Platform
 ```
 
